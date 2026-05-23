@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
+        model: "llama-3.3-70b-versatile", // Modello aggiornato
         messages: [{ role: "user", content: userMessage }]
       })
     });
@@ -23,11 +23,9 @@ export default async function handler(req, res) {
         content: [{ text: data.choices[0].message.content }] 
       });
     } else {
-      return res.status(500).json({ error: "Errore Groq: " + JSON.stringify(data) });
+      return res.status(500).json({ error: "Errore Groq: " + JSON.stringify(data.error) });
     }
   } catch (err) {
     return res.status(500).json({ error: "Errore di connessione: " + err.message });
   }
 }
-
-      
