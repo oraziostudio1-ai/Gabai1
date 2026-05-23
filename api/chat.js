@@ -4,7 +4,8 @@ export default async function handler(req, res) {
   const userMessage = messages[messages.length - 1].content;
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+
     
     const response = await fetch(url, {
       method: 'POST',
