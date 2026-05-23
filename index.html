@@ -119,6 +119,7 @@
 
 <script>
 let API_KEY = localStorage.getItem('gabai_key') || "";
+const USE_PROXY = location.protocol === 'file:';
 
 const COMBOS = [
   { model:'gemini-2.5-flash',        ver:'v1'     },
@@ -133,8 +134,7 @@ let WORKING_URL = null;
 
 function makeUrl(model, ver) {
   const direct = `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${API_KEY}`;
-  // Forziamo l'uso del proxy per evitare problemi CORS sui sottodomini di GitHub
-  return `https://corsproxy.io/?url=${encodeURIComponent(direct)}`;
+  return USE_PROXY ? `https://corsproxy.io/?url=${encodeURIComponent(direct)}` : direct;
 }
 
 function resetKey() {
@@ -203,7 +203,7 @@ detectModel();
 
 const SEED = [
   { role:"user",  parts:[{text:"Chi sei e chi ti ha creato?"}] },
-  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per explorar le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
+  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per esplorare le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
 ];
 let history = [...SEED];
 let loading  = false;
