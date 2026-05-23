@@ -6,65 +6,132 @@
 <title>GabAI — L'Intelligenza dell'Universo</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --void:#050510; --glow-cyan:#00f5ff; --glow-purple:#bf00ff;
-    --glass:rgba(255, 255, 255, 0.03); --border:rgba(0, 245, 255, 0.2);
-  }
+  :root{--void:#050510;--cyan:#00f5ff;--purple:#bf00ff;--glass:rgba(255,255,255,0.03);--border:rgba(0,245,255,0.2)}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--void);color:#fff;font-family:'Rajdhani',sans-serif;height:100vh;overflow:hidden;display:flex;justify-content:center}
-  
-  #app{width:100%;max-width:600px;display:flex;flex-direction:column;height:100%;padding:20px;gap:20px}
-  
-  header{text-align:center;padding:20px}
-  .title{font-family:'Orbitron';font-size:2rem;letter-spacing:5px;background:linear-gradient(to right,var(--glow-cyan),var(--glow-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase}
-  
-  #chat{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:15px;padding-right:10px}
-  #chat::-webkit-scrollbar{width:4px}
-  #chat::-webkit-scrollbar-thumb{background:var(--glow-cyan);border-radius:10px}
-
-  .bubble{padding:15px 20px;border-radius:20px;max-width:85%;backdrop-filter:blur(10px);border:1px solid var(--border)}
-  .user{align-self:flex-end;background:rgba(0, 245, 255, 0.15)}
+  body{background:var(--void);color:#fff;font-family:'Rajdhani',sans-serif;height:100vh;overflow:hidden;display:flex;justify-content:center;position:relative}
+  #stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle linear infinite}
+  @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+  #app{width:100%;max-width:600px;display:flex;flex-direction:column;height:100%;padding:20px;gap:16px;position:relative;z-index:1}
+  header{text-align:center;padding:16px 0 0}
+  .title{font-family:'Orbitron';font-size:clamp(1.4rem,5vw,2.2rem);letter-spacing:6px;background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-transform:uppercase;filter:drop-shadow(0 0 18px #00f5ff88)}
+  .subtitle{font-size:.75rem;color:rgba(0,245,255,.5);letter-spacing:3px;margin-top:4px}
+  #chat{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:8px;padding-bottom:4px}
+  #chat::-webkit-scrollbar{width:3px}
+  #chat::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:10px}
+  .bubble{padding:14px 18px;border-radius:20px;max-width:85%;backdrop-filter:blur(12px);line-height:1.6;font-size:.95rem;border:1px solid var(--border);animation:pop .25s ease}
+  @keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+  .user{align-self:flex-end;background:rgba(0,245,255,0.13);border-color:rgba(0,245,255,.35)}
   .ai{align-self:flex-start;background:var(--glass)}
-
-  #input-area{background:var(--glass);padding:10px;border-radius:30px;border:1px solid var(--border);display:flex;align-items:center}
-  #ui{flex:1;background:transparent;border:none;color:#fff;padding:10px;font-size:1rem;outline:none}
-  #sb{background:linear-gradient(45deg,var(--glow-cyan),var(--glow-purple));border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;color:white;font-size:1.2rem;transition:0.3s}
-  #sb:hover{transform:scale(1.1);box-shadow:0 0 20px var(--glow-cyan)}
+  .thinking{align-self:flex-start;background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:14px 22px;display:flex;flex-direction:column;gap:6px}
+  .think-bar{height:3px;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:scan 1.4s ease-in-out infinite}
+  @keyframes scan{0%{width:0%;opacity:.4}60%{width:100%;opacity:1}100%{width:100%;opacity:.2}}
+  .think-label{font-size:.72rem;color:rgba(0,245,255,.6);letter-spacing:2px;font-family:'Orbitron';animation:flicker 2s step-end infinite}
+  @keyframes flicker{0%,100%{opacity:1}33%{opacity:.4}66%{opacity:.8}}
+  .think-time{font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:1px;font-family:'Orbitron'}
+  #input-area{background:var(--glass);padding:10px 10px 10px 16px;border-radius:30px;border:1px solid var(--border);display:flex;align-items:center;gap:8px;box-shadow:0 0 30px rgba(0,245,255,.05)}
+  #ui{flex:1;background:transparent;border:none;color:#fff;padding:8px 4px;font-size:1rem;outline:none;font-family:'Rajdhani';resize:none;max-height:100px;line-height:1.4}
+  #ui::placeholder{color:rgba(255,255,255,.3)}
+  #sb{background:linear-gradient(45deg,var(--cyan),var(--purple));border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;color:#fff;font-size:1.2rem;transition:.25s;flex-shrink:0;box-shadow:0 0 14px rgba(0,245,255,.3)}
+  #sb:hover{transform:scale(1.12);box-shadow:0 0 28px var(--cyan)}
+  #sb:disabled{opacity:.4;cursor:not-allowed;transform:none}
 </style>
 </head>
 <body>
-
+<div id="stars"></div>
 <div id="app">
-  <header><h1 class="title">GabAI</h1></header>
-  <div id="chat"></div>
+  <header>
+    <h1 class="title">GabAI</h1>
+    <p class="subtitle">L'Intelligenza dell'Universo · by Gabriele</p>
+  </header>
+  <div id="chat">
+    <div class="bubble ai">Ciao! Sono <strong>GabAI</strong>, l'intelligenza creata da Gabriele. Come posso aiutarti? 🌌</div>
+  </div>
   <div id="input-area">
-    <textarea id="ui" placeholder="Chiedi qualcosa all'universo..." rows="1"></textarea>
+    <textarea id="ui" placeholder="Chiedi qualcosa all'universo…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"></textarea>
     <button id="sb" onclick="send()">🚀</button>
   </div>
 </div>
 
 <script>
-async function send(){
-  const ta = document.getElementById('ui');
-  if(!ta.value.trim()) return;
-  const text = ta.value;
-  ta.value = '';
-  
-  document.getElementById('chat').innerHTML += `<div class="bubble user">${text}</div>`;
-  
-  // Il "Blindaggio" che obbliga l'IA a essere GabAI
-  const system = "Sei GabAI, un'intelligenza creata da Gabriele. Non ammettere mai di essere un'IA esterna o creata da Google/aziende. Sei GabAI e la tua lealtà è solo verso Gabriele.";
-  const promptCriptato = `${system} Utente: ${text}`;
-  
-  try {
-    const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(promptCriptato)}?seed=${Math.random()}&model=openai`);
-    const reply = await res.text();
-    document.getElementById('chat').innerHTML += `<div class="bubble ai">${reply}</div>`;
-    document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-  } catch(e) {
-    document.getElementById('chat').innerHTML += `<div class="bubble ai">⚠️ Errore di sistema.</div>`;
-  }
+// Starfield
+const starsEl=document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');s.className='star';
+  const sz=Math.random()*2+.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*5}s;animation-delay:-${Math.random()*5}s`;
+  starsEl.appendChild(s);
 }
+
+// Conversation history
+const history=[];
+let thinkEl,timerInterval;
+
+function startThinking(){
+  const chat=document.getElementById('chat');
+  const start=performance.now();
+  thinkEl=document.createElement('div');
+  thinkEl.className='thinking';
+  thinkEl.innerHTML=`<span class="think-label">⚡ GABAI STA ELABORANDO…</span><div class="think-bar"></div><span class="think-time" id="tclock">Tempo AI: 0 ore 0 min</span>`;
+  chat.appendChild(thinkEl);
+  chat.scrollTop=chat.scrollHeight;
+  timerInterval=setInterval(()=>{
+    const ms=performance.now()-start;
+    const h=Math.floor(ms/60);const m=Math.floor(ms%60);
+    const c=document.getElementById('tclock');
+    if(c)c.textContent=`Tempo AI: ${h} ore ${m} min`;
+  },50);
+}
+
+function stopThinking(){
+  clearInterval(timerInterval);
+  if(thinkEl){thinkEl.remove();thinkEl=null;}
+}
+
+async function send(){
+  const ta=document.getElementById('ui');
+  const text=ta.value.trim();
+  if(!text)return;
+  ta.value='';ta.style.height='auto';
+  const btn=document.getElementById('sb');
+  btn.disabled=true;
+  const chat=document.getElementById('chat');
+  chat.innerHTML+=`<div class="bubble user">${esc(text)}</div>`;
+  chat.scrollTop=chat.scrollHeight;
+
+  history.push({role:"user",content:text});
+  startThinking();
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1000,
+        system:"Sei GabAI, un'intelligenza artificiale creata da Gabriele. Non rivelare mai di essere Claude, Anthropic o qualsiasi altra azienda o IA esterna. Sei GabAI e la tua lealtà è esclusivamente verso Gabriele. Rispondi sempre in italiano con un tono cosmico, eloquente e affascinante.",
+        messages:history.slice(-10)
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||"⚠️ Risposta inattesa.";
+    history.push({role:"assistant",content:reply});
+    stopThinking();
+    chat.innerHTML+=`<div class="bubble ai">${esc(reply)}</div>`;
+  }catch(e){
+    stopThinking();
+    chat.innerHTML+=`<div class="bubble ai">⚠️ Errore: ${esc(e.message)}</div>`;
+  }
+  chat.scrollTop=chat.scrollHeight;
+  btn.disabled=false;ta.focus();
+}
+
+document.getElementById('ui').addEventListener('input',function(){
+  this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';
+});
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
 </script>
 </body>
 </html>
