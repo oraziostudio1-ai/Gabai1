@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GabAI — L'Intelligenza dell'Universo</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -100,8 +100,8 @@
 </div>
 
 <script>
-// IL TUO URL PROXY (INCOLLATO DA GOOGLE)
-const SERVER_PROXY_URL = 'https://script.google.com/macros/s/AKfycbwmo1CJwVZebh_2Z5CeYICc-Fg8Y2mXwubmhd_BE4mLwnNjwfjcey2_bka3aS3kKtetq/exec';
+// LINK AGGIORNATO E CORRETTO
+const SERVER_PROXY_URL = 'https://script.google.com/macros/s/AKfycbzdBYSEKdq0pleVJhqEiKaP56_uHYSyMSzIkhC2SgBpuXBJpvwli2wjcF1DTwkwS0qh/exec';
 
 let history = [{role:"user", parts:[{text:"Sei GabAI, creata da Gabriele."}]},{role:"model", parts:[{text:"Sono GabAI, intelligenza creata da Gabriele."}]}];
 let loading = false;
@@ -131,7 +131,7 @@ async function send(){
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: history }),
-      redirect: 'follow'
+      mode: 'cors'
     });
     const data = await res.json();
     const reply = data.candidates[0].content.parts[0].text;
