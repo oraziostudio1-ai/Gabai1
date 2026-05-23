@@ -32,6 +32,13 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--glow-cyan);letter-spacing:1px}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--glow-cyan);animation:pulse 1.5s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 4px var(--glow-cyan)}50%{box-shadow:0 0 14px var(--glow-cyan),0 0 28px rgba(0,245,255,.4)}}
+  
+  /* Box per contenere l'interfaccia di attivazione API visibile */
+  #api-container{padding:10px 0 2px;display:flex;justify-content:center;flex-shrink:0}
+  .api-btn{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;color:#fff;background:linear-gradient(135deg,rgba(191,0,255,.6),rgba(0,245,255,.6));border:2px solid var(--glow-cyan);padding:10px 24px;border-radius:30px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;box-shadow:0 0 15px rgba(0,245,255,.3);transition:all .3s ease;display:flex;align-items:center;gap:10px}
+  .api-btn:hover{transform:translateY(-2px);box-shadow:0 0 25px rgba(0,245,255,.6),0 0 10px rgba(191,0,255,.4);border-color:#fff}
+  .api-btn:active{transform:translateY(1px)}
+
   #quick-qs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 8px;flex-shrink:0}
   .qb{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;border:1px solid rgba(0,245,255,.25);background:rgba(0,245,255,.05);color:var(--text-main);transition:all .2s;letter-spacing:.5px}
   .qb:hover{background:rgba(0,245,255,.15);border-color:var(--glow-cyan);box-shadow:0 0 12px rgba(0,245,255,.2);transform:translateY(-1px)}
@@ -54,6 +61,13 @@
   .mn{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;font-weight:700}
   .msg.ai .mn{color:var(--plasma)}
   .msg.user .mn{color:var(--glow-cyan);text-align:right}
+  
+  /* Nuovi stili per il contenitore delle immagini e pulsante download */
+  .gen-img-container { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
+  .gen-img { width: 100%; max-width: 420px; border-radius: 12px; border: 2px solid rgba(0,245,255,.3); box-shadow: 0 0 20px rgba(0,245,255,.2); background: #000; display: block; }
+  .dl-btn { align-self: flex-start; font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--void); background: var(--glow-cyan); border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.2s; }
+  .dl-btn:hover { background: #fff; box-shadow: 0 0 12px var(--glow-cyan); transform: translateY(-1px); }
+
   .typing{display:flex;gap:5px;align-items:center;padding:6px 0}
   .typing span{width:7px;height:7px;border-radius:50%;background:var(--glow-purple);animation:bounce 1.1s ease-in-out infinite}
   .typing span:nth-child(2){animation-delay:.18s;background:var(--plasma)}
@@ -69,7 +83,7 @@
   #sb:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(0,245,255,.5)}
   #sb:active{transform:scale(.95)}
   .si{width:28px;height:28px;border-radius:50%;background:var(--void);display:flex;align-items:center;justify-content:center;font-size:14px}
-  #info{text-align:center;font-size:.65rem;color:var(--text-dim);margin-top:6px;letter-spacing:1px;cursor:pointer}
+  #info{text-align:center;font-size:.65rem;color:var(--text-dim);margin-top:6px;letter-spacing:1px;cursor:pointer;padding:5px 0}
   #info:hover{color:var(--glow-cyan)}
   @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .bubble strong{color:var(--glow-cyan)}
@@ -91,26 +105,28 @@
     <div class="status"><div class="dot" id="status-dot"></div><span id="status-text">OFFLINE</span></div>
   </header>
 
+  <div id="api-container">
+    <button class="api-btn" onclick="resetKey()">🔑 Configura Chiave API</button>
+  </div>
+
   <div id="quick-qs">
+    <button class="qb" onclick="askQuick(this)">🎨 Genera immagine di un buco nero cosmico</button>
     <button class="qb" onclick="askQuick(this)">🌍 Perché esiste l'universo?</button>
     <button class="qb" onclick="askQuick(this)">🧠 Cos'è la coscienza?</button>
-    <button class="qb" onclick="askQuick(this)">⚡ Come funziona il tempo?</button>
-    <button class="qb" onclick="askQuick(this)">🌊 C'è vita extraterrestre?</button>
-    <button class="qb" onclick="askQuick(this)">🔮 Il libero arbitrio esiste?</button>
-    <button class="qb" onclick="askQuick(this)">✨ Cos'è l'amore?</button>
+    <button class="qb" onclick="askQuick(this)">✨ Disegna un astronauta su Marte</button>
   </div>
 
   <div id="chat">
     <div id="welcome">
       <div class="wt">Ciao, sono GabAI 🚀</div>
-      <p>Un'intelligenza creata per esplorare le domande più grandi dell'universo — e quelle più piccole del quotidiano. Chiedimi qualsiasi cosa.</p>
+      <p>Un'intelligenza creata per esplorare le domande più grandi dell'universo e plasmare immagini spaziali. Chiedimi di generare, creare o disegnare qualcosa!</p>
       <div class="badge">✦ Creato da Gabriele ✦</div>
     </div>
   </div>
 
   <div id="input-area">
     <div id="input-wrap">
-      <textarea id="ui" rows="1" placeholder="Scrivi la tua domanda cosmica…" maxlength="2000"></textarea>
+      <textarea id="ui" rows="1" placeholder="Scrivi la tua domanda o chiedimi un'immagine…" maxlength="2000"></textarea>
       <button id="sb" onclick="send()" title="Invia"><div class="si">🚀</div></button>
     </div>
     <div id="info" onclick="resetKey()">GabAI · Creata da Gabriele · Clicca qui per inserire/cambiare Chiave API</div>
@@ -139,7 +155,7 @@ function makeUrl(model, ver) {
 
 function resetKey() {
   const newKey = prompt("Inserisci la tua chiave API di Google AI Studio:", API_KEY);
-  if (newKey) {
+  if (newKey !== null) {
     localStorage.setItem('gabai_key', newKey.trim());
     location.reload();
   }
@@ -147,8 +163,7 @@ function resetKey() {
 
 async function detectModel() {
   if (!API_KEY) {
-    document.getElementById('info').textContent = '⚠️ Clicca qui per inserire la tua chiave API per iniziare!';
-    setTimeout(() => { resetKey(); }, 500);
+    document.getElementById('info').textContent = '⚠️ Clicca in alto o qui per inserire la tua chiave API per iniziare!';
     return false;
   }
 
@@ -182,18 +197,18 @@ async function detectModel() {
   d.className = 'msg ai';
   
   const has429 = log.some(l => l.includes('429') || l.toLowerCase().includes('demand') || l.toLowerCase().includes('quota') || l.toLowerCase().includes('expired'));
-  let fixMsg = `<br><br>Controlla la chiave e riprova!`;
+  let fixMsg = `<br><br>Controlla la chiave e riprova usando il pulsante in alto!`;
   
   if (has429) {
     fixMsg = `<br><br>⚠️ <strong>Problema di quota, traffico intenso o chiave scaduta.</strong><br><br>
        <strong>Cosa fare:</strong><br>
        1. Se i server sono carichi, attendi un minuto e rinfresca la pagina.<br>
-       2. Se la chiave è scaduta o bloccata, creane una nuova su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a>, poi fai clic sulla scritta in basso per aggiornarla.`;
+       2. Se la chiave è scaduta o bloccata, creane una nuova su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a>, poi fai clic sul pulsante in alto per aggiornarla.`;
   }
 
   d.innerHTML = `<div class="av ai-av"><span>🌌</span></div><div><div class="mn">GabAI</div><div class="bubble err-b">❌ <strong>Impossibile avviare il motore cosmico.</strong><br><br>${log.map(l=>`<code>${l}</code>`).join('<br>')}${fixMsg}</div></div>`;
   chat.appendChild(d);
-  document.getElementById('info').textContent = '❌ Errore chiave o modelli occupati — Clicca qui per configurare';
+  document.getElementById('info').textContent = '❌ Errore chiave o modelli occupati — Clicca per configurare';
   document.getElementById('status-text').textContent = 'ERRORE';
   document.getElementById('status-dot').style.background = '#ff3232';
   return false;
@@ -203,7 +218,7 @@ detectModel();
 
 const SEED = [
   { role:"user",  parts:[{text:"Chi sei e chi ti ha creato?"}] },
-  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per esplorare le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
+  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per esplorare le domande più profonde dell'universo. Se vuoi posso anche creare delle immagini spettacolari, basta chiedere!"}] }
 ];
 let history = [...SEED];
 let loading  = false;
@@ -245,6 +260,24 @@ function appendMsg(role,html,err){
   chat.appendChild(d); scrollBot();
 }
 
+// Nuova funzione per scaricare l'immagine in locale in modo pulito
+async function downloadImg(url) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = `gabai_art_${Date.now()}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch(e) {
+    alert("Errore nel download automatico. Tieni premuta l'immagine per salvarla sul dispositivo!");
+  }
+}
+
 function showTyping(){
   const chat=document.getElementById('chat'), d=document.createElement('div');
   d.className='msg ai'; d.id='typ';
@@ -262,6 +295,11 @@ async function send(){
   appendMsg('user',md(text));
   history.push({role:'user',parts:[{text}]});
   showTyping();
+
+  // Controlliamo se la richiesta contiene parole chiave per le immagini
+  const triggers = ["disegna", "genera immagine", "genera un'immagine", "crea un'immagine", "crea immagine", "fai una foto", "immagine di", "disegno di", "fai un disegno"];
+  const isImageRequest = triggers.some(word => text.toLowerCase().includes(word));
+
   try{
     if(!WORKING_URL){ appendMsg('ai','⚠️ Nessun modello funzionante trovato. Controlla la API key.',true); loading=false; return; }
     const res = await fetch(WORKING_URL,{
@@ -274,8 +312,25 @@ async function send(){
     if(!res.ok){ const m=data?.error?.message||`HTTP ${res.status}`; appendMsg('ai',`⚠️ Errore API: ${m}`,true); history.pop(); return; }
     const reply=data?.candidates?.[0]?.content?.parts?.[0]?.text;
     if(!reply){ appendMsg('ai','⚠️ Risposta vuota, riprova!',true); history.pop(); return; }
+    
     history.push({role:'model',parts:[{text:reply}]});
-    appendMsg('ai',md(reply));
+
+    if (isImageRequest) {
+      // Estraiamo il prompt pulito eliminando le parole di attivazione esterne
+      const cleanPrompt = encodeURIComponent(text.replace(/disegna|genera immagine|genera un'immagine|crea un'immagine|crea immagine|fai una foto|immagine di|disegno di|fai un disegno/gi, "").trim());
+      const imageUrl = `https://image.pollinations.ai/p/${cleanPrompt}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
+      
+      const combinedHtml = `
+        ${md(reply)}
+        <div class="gen-img-container">
+          <img src="${imageUrl}" class="gen-img" alt="Immagine Generata" loading="lazy">
+          <button class="dl-btn" onclick="downloadImg('${imageUrl}')">📥 Scarica Immagine</button>
+        </div>
+      `;
+      appendMsg('ai', combinedHtml);
+    } else {
+      appendMsg('ai', md(reply));
+    }
   }catch(e){
     hideTyping();
     appendMsg('ai',`⚠️ Connessione fallita: ${e.message}`,true);
