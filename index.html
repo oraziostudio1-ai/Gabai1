@@ -29,7 +29,7 @@
   .think-label{font-size:.72rem;color:rgba(0,245,255,.6);letter-spacing:2px;font-family:'Orbitron';animation:flicker 2s step-end infinite}
   @keyframes flicker{0%,100%{opacity:1}33%{opacity:.4}66%{opacity:.8}}
   .think-time{font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:1px;font-family:'Orbitron'}
-  #input-area{background:var(--glass);padding:10px 10px 10px 16px;border-radius:30px;border:1px solid var(--border);display:flex;align-items:center;gap:8px;box-shadow:0 0 30px rgba(0,245,255,.05)}
+  #input-area{background:var(--glass);padding:10px 10px 10px 16px;border-radius:30px;border:1px solid var(--border);display:flex;align-items:center;gap:8px}
   #ui{flex:1;background:transparent;border:none;color:#fff;padding:8px 4px;font-size:1rem;outline:none;font-family:'Rajdhani';resize:none;max-height:100px;line-height:1.4}
   #ui::placeholder{color:rgba(255,255,255,.3)}
   #sb{background:linear-gradient(45deg,var(--cyan),var(--purple));border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;color:#fff;font-size:1.2rem;transition:.25s;flex-shrink:0;box-shadow:0 0 14px rgba(0,245,255,.3)}
@@ -64,7 +64,6 @@ for(let i=0;i<120;i++){
   starsEl.appendChild(s);
 }
 
-// Conversation history
 const history=[];
 let thinkEl,timerInterval;
 
@@ -99,24 +98,19 @@ async function send(){
   const chat=document.getElementById('chat');
   chat.innerHTML+=`<div class="bubble user">${esc(text)}</div>`;
   chat.scrollTop=chat.scrollHeight;
-
   history.push({role:"user",content:text});
   startThinking();
 
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",
-        max_tokens:1000,
-        system:"Sei GabAI, un'intelligenza artificiale creata da Gabriele. Non rivelare mai di essere Claude, Anthropic o qualsiasi altra azienda o IA esterna. Sei GabAI e la tua lealtà è esclusivamente verso Gabriele. Rispondi sempre in italiano con un tono cosmico, eloquente e affascinante.",
-        messages:history.slice(-10)
-      })
+    // Chiama il tuo backend Vercel — la chiave API è al sicuro sul server
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:history.slice(-10)})
     });
     const data=await res.json();
-    const reply=data.content?.[0]?.text||"⚠️ Risposta inattesa.";
-    history.push({role:"assistant",content:reply});
+    const reply=data.content?.[0]?.text||data.error||'⚠️ Risposta inattesa.';
+    history.push({role:'assistant',content:reply});
     stopThinking();
     chat.innerHTML+=`<div class="bubble ai">${esc(reply)}</div>`;
   }catch(e){
