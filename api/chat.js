@@ -1,30 +1,33 @@
 export default async function handler(req, res) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   const { messages } = req.body;
   const userMessage = messages[messages.length - 1].content;
 
   try {
-    // Nota il prefisso 'models/' aggiunto prima del nome del modello
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    
-    const response = await fetch(url, {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: userMessage }] }]
+        model: "llama3-8b-8192",
+        messages: [{ role: "user", content: userMessage }]
       })
     });
 
     const data = await response.json();
 
-    if (data.candidates) {
+    if (data.choices && data.choices[0]) {
       return res.status(200).json({ 
-        content: [{ text: data.candidates[0].content.parts[0].text }] 
+        content: [{ text: data.choices[0].message.content }] 
       });
     } else {
-      return res.status(500).json({ error: "Errore API: " + JSON.stringify(data.error) });
+      return res.status(500).json({ error: "Errore Groq: " + JSON.stringify(data) });
     }
   } catch (err) {
-    return res.status(500).json({ error: "Errore di rete: " + err.message });
+    return res.status(500).json({ error: "Errore di connessione: " + err.message });
   }
 }
+
+      
