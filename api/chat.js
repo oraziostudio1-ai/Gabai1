@@ -4,8 +4,8 @@ export default async function handler(req, res) {
   const userMessage = messages[messages.length - 1].content;
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
-
+    // Nota il prefisso 'models/' aggiunto prima del nome del modello
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     
     const response = await fetch(url, {
       method: 'POST',
@@ -17,16 +17,14 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Verifichiamo se la struttura della risposta è quella corretta
-    if (data.candidates && data.candidates[0].content.parts[0].text) {
+    if (data.candidates) {
       return res.status(200).json({ 
         content: [{ text: data.candidates[0].content.parts[0].text }] 
       });
     } else {
-      // Se la struttura è diversa, inviamo l'errore al frontend
-      return res.status(500).json({ error: "Struttura risposta non prevista: " + JSON.stringify(data) });
+      return res.status(500).json({ error: "Errore API: " + JSON.stringify(data.error) });
     }
   } catch (err) {
-    return res.status(500).json({ error: "Errore interno: " + err.message });
+    return res.status(500).json({ error: "Errore di rete: " + err.message });
   }
 }
