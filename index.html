@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GabAI — L'Intelligenza dell'Universo</title>
-<meta name="google-site-verification" content="aktUVPchn7B2IhfKVQCknfeGb6y647RIrRrXRPVyJ44" />
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -134,7 +133,7 @@ let WORKING_URL = null;
 
 function makeUrl(model, ver) {
   const direct = `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${API_KEY}`;
-  // Forziamo l'uso del proxy per evitare problemi CORS sui sottodomini di GitHub o Vercel
+  // Forziamo l'uso del proxy per evitare problemi CORS sui sottodomini di GitHub
   return `https://corsproxy.io/?url=${encodeURIComponent(direct)}`;
 }
 
@@ -204,7 +203,7 @@ detectModel();
 
 const SEED = [
   { role:"user",  parts:[{text:"Chi sei e chi ti ha creato?"}] },
-  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per esplorare le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
+  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per explorar le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
 ];
 let history = [...SEED];
 let loading  = false;
