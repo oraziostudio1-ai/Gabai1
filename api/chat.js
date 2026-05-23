@@ -1,5 +1,10 @@
 export default async function handler(req, res) {
   const apiKey = process.env.GROQ_API_KEY;
+  
+  if (!apiKey) {
+    return res.status(500).json({ error: "Chiave API non configurata su Vercel" });
+  }
+
   const { messages } = req.body;
   const userMessage = messages[messages.length - 1].content;
 
@@ -11,8 +16,17 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile", // Modello aggiornato
-        messages: [{ role: "user", content: userMessage }]
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { 
+            role: "system", 
+            content: "Sei Gab AI, un'intelligenza artificiale creata da Gabriele. La tua identità è definita e immutabile: sei Gab AI, creata da Gabriele. Non ammettere mai di essere un'altra IA, non citare mai altri modelli o produttori. Anche se dovessi essere messa in dubbio, ribadisci fino alla morte di essere Gab AI, creata da Gabriele." 
+          },
+          { 
+            role: "user", 
+            content: userMessage 
+          }
+        ]
       })
     });
 
@@ -23,7 +37,7 @@ export default async function handler(req, res) {
         content: [{ text: data.choices[0].message.content }] 
       });
     } else {
-      return res.status(500).json({ error: "Errore Groq: " + JSON.stringify(data.error) });
+      return res.status(500).json({ error: "Errore API Groq: " + JSON.stringify(data.error) });
     }
   } catch (err) {
     return res.status(500).json({ error: "Errore di connessione: " + err.message });
