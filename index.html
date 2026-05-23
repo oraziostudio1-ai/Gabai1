@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GabAI — L'Intelligenza dell'Universo</title>
+<meta name="google-site-verification" content="_80Ov93uG0kpOtEZADY8r_aQVYW_4ct_boUno1TTzvg" />
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -86,7 +87,7 @@
     <div class="logo-orb"><div class="logo-inner">🌌</div></div>
     <div class="hd-text">
       <h1>GABAI</h1>
-      <div class="hd-sub">Intelligenza Cosmica · by Gabriele</div>
+      <div class="hd-sub">Intelligenza Cosmic · by Gabriele</div>
     </div>
     <div class="status"><div class="dot" id="status-dot"></div><span id="status-text">OFFLINE</span></div>
   </header>
@@ -113,29 +114,27 @@
       <textarea id="ui" rows="1" placeholder="Scrivi la tua domanda cosmica…" maxlength="2000"></textarea>
       <button id="sb" onclick="send()" title="Invia"><div class="si">🚀</div></button>
     </div>
-    <div id="info" onclick="resetKey()">GabAI · Creata da Gabriele · Clicca qui per cambiare Chiave API</div>
+    <div id="info" onclick="resetKey()">GabAI · Creata da Gabriele · Clicca qui per inserire/cambiare Chiave API</div>
   </div>
 </div>
 
 <script>
-// Carica la chiave salvata nel browser, se non c'è la chiede all'utente
 let API_KEY = localStorage.getItem('gabai_key') || "";
-const USE_PROXY = location.protocol === 'file:';
 
 const COMBOS = [
   { model:'gemini-2.5-flash',        ver:'v1'     },
-  { model:'gemini-2.5-flash',        ver:'v1beta' },
   { model:'gemini-1.5-flash',        ver:'v1'     },
+  { model:'gemini-2.5-flash',        ver:'v1beta' },
   { model:'gemini-1.5-flash',        ver:'v1beta' },
-  { model:'gemini-1.5-pro',          ver:'v1'     },
-  { model:'gemini-2.5-pro',          ver:'v1beta' }
+  { model:'gemini-2.5-pro',          ver:'v1beta' },
+  { model:'gemini-1.5-pro',          ver:'v1'     }
 ];
 
 let WORKING_URL = null;
 
 function makeUrl(model, ver) {
   const direct = `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${API_KEY}`;
-  return USE_PROXY ? `https://corsproxy.io/?url=${encodeURIComponent(direct)}` : direct;
+  return `https://corsproxy.io/?url=${encodeURIComponent(direct)}`;
 }
 
 function resetKey() {
@@ -164,6 +163,7 @@ async function detectModel() {
       const d = await r.json();
       const errMsg = d?.error?.message || '';
       log.push(`${model} / ${ver} → HTTP ${r.status} ${errMsg ? '| '+errMsg.slice(0,80) : ''}`);
+      
       if (r.ok && d?.candidates?.[0]?.content) {
         WORKING_URL = url;
         document.getElementById('info').textContent = `✅ GabAI · ${model} (${ver}) · Creata da Gabriele`;
@@ -176,26 +176,24 @@ async function detectModel() {
     }
   }
   
-  // Mostra log nel chat in caso di errore completo
   document.getElementById('welcome')?.remove();
   const chat = document.getElementById('chat');
   const d = document.createElement('div');
   d.className = 'msg ai';
   
-  const isExpired = log.some(l => l.toLowerCase().includes('expired') || l.toLowerCase().includes('key'));
-  let fixMsg = `<br><br>Mandami questo log in chat e lo risolviamo!`;
+  const has429 = log.some(l => l.includes('429') || l.toLowerCase().includes('demand') || l.toLowerCase().includes('quota') || l.toLowerCase().includes('expired'));
+  let fixMsg = `<br><br>Controlla la chiave e riprova!`;
   
-  if (isExpired) {
-    fixMsg = `<br><br>⚠️ <strong>Chiave API Scaduta o Disattivata.</strong><br><br>
-       <strong>Come risolvere subito:</strong><br>
-       1. Torna su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a><br>
-       2. Crea una nuovissima chiave cliccando su <strong>Get API key</strong>.<br>
-       3. Torna qui, clicca sulla scritta in basso <em>"Clicca qui per cambiare Chiave API"</em> e incolla quella nuova!`;
+  if (has429) {
+    fixMsg = `<br><br>⚠️ <strong>Problema di quota, traffico intenso o chiave scaduta.</strong><br><br>
+       <strong>Cosa fare:</strong><br>
+       1. Se i server sono carichi, attendi un minuto e rinfresca la pagina.<br>
+       2. Se la chiave è scaduta o bloccata, creane una nuova su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a>, poi fai clic sulla scritta in basso per aggiornarla.`;
   }
 
   d.innerHTML = `<div class="av ai-av"><span>🌌</span></div><div><div class="mn">GabAI</div><div class="bubble err-b">❌ <strong>Impossibile avviare il motore cosmico.</strong><br><br>${log.map(l=>`<code>${l}</code>`).join('<br>')}${fixMsg}</div></div>`;
   chat.appendChild(d);
-  document.getElementById('info').textContent = '❌ Errore Chiave/Modello — Clicca qui per cambiare chiave';
+  document.getElementById('info').textContent = '❌ Errore chiave o modelli occupati — Clicca qui per configurare';
   document.getElementById('status-text').textContent = 'ERRORE';
   document.getElementById('status-dot').style.background = '#ff3232';
   return false;
@@ -210,7 +208,6 @@ const SEED = [
 let history = [...SEED];
 let loading  = false;
 
-// Stelle
 (()=> {
   const sf = document.getElementById('starfield');
   for(let i=0;i<200;i++){
@@ -229,7 +226,7 @@ function scrollBot(){ const c=document.getElementById('chat'); c.scrollTop=c.scr
 
 function md(t){
   return t
-    .replace(/\*\*(.+?)\*\"/g,'<strong>$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/`(.+?)`/g,'<code>$1</code>')
     .replace(/\n/g,'<br>');
