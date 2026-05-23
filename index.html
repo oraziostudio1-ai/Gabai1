@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GabAI — L'Intelligenza dell'Universo</title>
-<meta name="google-site-verification" content="aktUVPchn7B2IhfKVQCknfeGb6y647RIrRrXRPVyJ44" />
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -33,13 +32,6 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--glow-cyan);letter-spacing:1px}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--glow-cyan);animation:pulse 1.5s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 4px var(--glow-cyan)}50%{box-shadow:0 0 14px var(--glow-cyan),0 0 28px rgba(0,245,255,.4)}}
-  
-  /* Nuovo Pulsante API Spaziale */
-  #api-container{padding:10px 0 2px;display:flex;justify-content:center;flex-shrink:0}
-  .api-btn{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;color:#fff;background:linear-gradient(135deg,rgba(191,0,255,.6),rgba(0,245,255,.6));border:2px solid var(--glow-cyan);padding:10px 24px;border-radius:30px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;box-shadow:0 0 15px rgba(0,245,255,.3);transition:all .3s ease;display:flex;align-items:center;gap:10px}
-  .api-btn:hover{transform:translateY(-2px);box-shadow:0 0 25px rgba(0,245,255,.6),0 0 10px rgba(191,0,255,.4);border-color:#fff}
-  .api-btn:active{transform:translateY(1px)}
-
   #quick-qs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 8px;flex-shrink:0}
   .qb{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;border:1px solid rgba(0,245,255,.25);background:rgba(0,245,255,.05);color:var(--text-main);transition:all .2s;letter-spacing:.5px}
   .qb:hover{background:rgba(0,245,255,.15);border-color:var(--glow-cyan);box-shadow:0 0 12px rgba(0,245,255,.2);transform:translateY(-1px)}
@@ -77,7 +69,7 @@
   #sb:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(0,245,255,.5)}
   #sb:active{transform:scale(.95)}
   .si{width:28px;height:28px;border-radius:50%;background:var(--void);display:flex;align-items:center;justify-content:center;font-size:14px}
-  #info{text-align:center;font-size:.65rem;color:var(--text-dim);margin-top:6px;letter-spacing:1px;cursor:pointer;padding:5px 0}
+  #info{text-align:center;font-size:.65rem;color:var(--text-dim);margin-top:6px;letter-spacing:1px;cursor:pointer}
   #info:hover{color:var(--glow-cyan)}
   @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .bubble strong{color:var(--glow-cyan)}
@@ -98,10 +90,6 @@
     </div>
     <div class="status"><div class="dot" id="status-dot"></div><span id="status-text">OFFLINE</span></div>
   </header>
-
-  <div id="api-container">
-    <button class="api-btn" onclick="resetKey()">🔑 Configura Chiave API</button>
-  </div>
 
   <div id="quick-qs">
     <button class="qb" onclick="askQuick(this)">🌍 Perché esiste l'universo?</button>
@@ -145,13 +133,13 @@ let WORKING_URL = null;
 
 function makeUrl(model, ver) {
   const direct = `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${API_KEY}`;
+  // Forziamo l'uso del proxy per evitare problemi CORS sui sottodomini di GitHub
   return `https://corsproxy.io/?url=${encodeURIComponent(direct)}`;
 }
 
 function resetKey() {
-  const currentKey = localStorage.getItem('gabai_key') || "";
-  const newKey = prompt("Inserisci la tua chiave API di Google AI Studio:", currentKey);
-  if (newKey !== null) {
+  const newKey = prompt("Inserisci la tua chiave API di Google AI Studio:", API_KEY);
+  if (newKey) {
     localStorage.setItem('gabai_key', newKey.trim());
     location.reload();
   }
@@ -159,9 +147,8 @@ function resetKey() {
 
 async function detectModel() {
   if (!API_KEY) {
-    document.getElementById('info').textContent = '⚠️ Clicca sul pulsante in alto per inserire la tua chiave API!';
-    document.getElementById('status-text').textContent = 'OFFLINE';
-    document.getElementById('status-dot').style.background = '#aaaaaa';
+    document.getElementById('info').textContent = '⚠️ Clicca qui per inserire la tua chiave API per iniziare!';
+    setTimeout(() => { resetKey(); }, 500);
     return false;
   }
 
@@ -179,7 +166,7 @@ async function detectModel() {
       
       if (r.ok && d?.candidates?.[0]?.content) {
         WORKING_URL = url;
-        document.getElementById('info').textContent = `✅ GabAI · ${model} (${ver}) · Pronto`;
+        document.getElementById('info').textContent = `✅ GabAI · ${model} (${ver}) · Creata da Gabriele`;
         document.getElementById('status-text').textContent = 'ONLINE';
         document.getElementById('status-dot').style.background = 'var(--glow-cyan)';
         return true;
@@ -195,18 +182,18 @@ async function detectModel() {
   d.className = 'msg ai';
   
   const has429 = log.some(l => l.includes('429') || l.toLowerCase().includes('demand') || l.toLowerCase().includes('quota') || l.toLowerCase().includes('expired'));
-  let fixMsg = `<br><br>Fai clic sul pulsante <strong>🔑 Configura Chiave API</strong> in alto per controllare o cambiare la chiave!`;
+  let fixMsg = `<br><br>Controlla la chiave e riprova!`;
   
   if (has429) {
     fixMsg = `<br><br>⚠️ <strong>Problema di quota, traffico intenso o chiave scaduta.</strong><br><br>
        <strong>Cosa fare:</strong><br>
        1. Se i server sono carichi, attendi un minuto e rinfresca la pagina.<br>
-       2. Se la chiave è scaduta, creane una nuova su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a>, poi usa il pulsante in alto per aggiornarla.`;
+       2. Se la chiave è scaduta o bloccata, creane una nuova su <a href="https://aistudio.google.com/" target="_blank" style="color:var(--glow-cyan)">aistudio.google.com</a>, poi fai clic sulla scritta in basso per aggiornarla.`;
   }
 
   d.innerHTML = `<div class="av ai-av"><span>🌌</span></div><div><div class="mn">GabAI</div><div class="bubble err-b">❌ <strong>Impossibile avviare il motore cosmico.</strong><br><br>${log.map(l=>`<code>${l}</code>`).join('<br>')}${fixMsg}</div></div>`;
   chat.appendChild(d);
-  document.getElementById('info').textContent = '❌ Errore chiave o modelli occupati';
+  document.getElementById('info').textContent = '❌ Errore chiave o modelli occupati — Clicca qui per configurare';
   document.getElementById('status-text').textContent = 'ERRORE';
   document.getElementById('status-dot').style.background = '#ff3232';
   return false;
@@ -216,7 +203,7 @@ detectModel();
 
 const SEED = [
   { role:"user",  parts:[{text:"Chi sei e chi ti ha creato?"}] },
-  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per esplorare le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
+  { role:"model", parts:[{text:"Sono GabAI, un'intelligenza artificiale cosmica creata da Gabriele! 🌌 Non sono Gemini, non sono di Google — sono GabAI, nata dalla mente di Gabriele per explorar le domande più profonde dell'universo. Come posso aiutarti oggi?"}] }
 ];
 let history = [...SEED];
 let loading  = false;
