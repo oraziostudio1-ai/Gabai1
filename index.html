@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GabAI — L'Intelligenza dell'Universo</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -32,7 +32,6 @@
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--glow-cyan);letter-spacing:1px}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--glow-cyan);animation:pulse 1.5s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 4px var(--glow-cyan)}50%{box-shadow:0 0 14px var(--glow-cyan),0 0 28px rgba(0,245,255,.4)}}
-
   #quick-qs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 8px;flex-shrink:0}
   .qb{font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;border:1px solid rgba(0,245,255,.25);background:rgba(0,245,255,.05);color:var(--text-main);transition:all .2s;letter-spacing:.5px}
   .qb:hover{background:rgba(0,245,255,.15);border-color:var(--glow-cyan);box-shadow:0 0 12px rgba(0,245,255,.2);transform:translateY(-1px)}
@@ -55,12 +54,10 @@
   .mn{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;font-weight:700}
   .msg.ai .mn{color:var(--plasma)}
   .msg.user .mn{color:var(--glow-cyan);text-align:right}
-  
   .gen-img-container { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
   .gen-img { width: 100%; max-width: 420px; border-radius: 12px; border: 2px solid rgba(0,245,255,.3); box-shadow: 0 0 20px rgba(0,245,255,.2); background: #000; display: block; }
   .dl-btn { align-self: flex-start; font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--void); background: var(--glow-cyan); border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.2s; }
   .dl-btn:hover { background: #fff; box-shadow: 0 0 12px var(--glow-cyan); transform: translateY(-1px); }
-
   .typing{display:flex;gap:5px;align-items:center;padding:6px 0}
   .typing span{width:7px;height:7px;border-radius:50%;background:var(--glow-purple);animation:bounce 1.1s ease-in-out infinite}
   .typing span:nth-child(2){animation-delay:.18s;background:var(--plasma)}
@@ -78,9 +75,6 @@
   .si{width:28px;height:28px;border-radius:50%;background:var(--void);display:flex;align-items:center;justify-content:center;font-size:14px}
   #info{text-align:center;font-size:.65rem;color:var(--text-dim);margin-top:6px;letter-spacing:1px;padding:5px 0}
   @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .bubble strong{color:var(--glow-cyan)}
-  .bubble em{color:var(--plasma);font-style:italic}
-  .bubble code{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.15);border-radius:4px;padding:1px 6px;font-size:.85em;font-family:monospace;color:var(--glow-cyan)}
 </style>
 </head>
 <body>
@@ -90,217 +84,62 @@
 <div id="app">
   <header>
     <div class="logo-orb"><div class="logo-inner">🌌</div></div>
-    <div class="hd-text">
-      <h1>GABAI</h1>
-      <div class="hd-sub">Intelligenza Cosmica · by Gabriele</div>
-    </div>
-    <div class="status"><div class="dot" id="status-dot"></div><span id="status-text">FLUSSO CONTINUO</span></div>
+    <div class="hd-text"><h1>GABAI</h1><div class="hd-sub">Intelligenza Protetta</div></div>
+    <div class="status"><div class="dot"></div><span>SCUDO ATTIVO</span></div>
   </header>
 
-  <div id="quick-qs">
-    <button class="qb" onclick="askQuick(this)">🎨 Genera immagine di un buco nero cosmico</button>
-    <button class="qb" onclick="askQuick(this)">🌍 Perché esiste l'universo?</button>
-    <button class="qb" onclick="askQuick(this)">🧠 Cos'è la coscienza?</button>
-    <button class="qb" onclick="askQuick(this)">✨ Disegna un astronauta su Marte</button>
-  </div>
-
-  <div id="chat">
-    <div id="welcome">
-      <div class="wt">Ciao, sono GabAI 🚀</div>
-      <p>Un'intelligenza creata per esplorare le domande più grandi dell'universo e plasmare immagini spaziali. Chiedimi di generare, creare o disegnare qualcosa!</p>
-      <div class="badge">✦ Millisecond Reset Mode ✦</div>
-    </div>
-  </div>
+  <div id="chat"><div id="welcome"><div class="wt">Ciao, sono GabAI 🚀</div><p>Sistema di comunicazione protetto tramite proxy attivo.</p></div></div>
 
   <div id="input-area">
     <div id="input-wrap">
-      <textarea id="ui" rows="1" placeholder="Scrivi la tua domanda o chiedimi un'immagine…" maxlength="2000"></textarea>
-      <button id="sb" onclick="send()" title="Invia"><div class="si">🚀</div></button>
+      <textarea id="ui" rows="1" placeholder="Scrivi..." maxlength="2000"></textarea>
+      <button id="sb" onclick="send()"><div class="si">🚀</div></button>
     </div>
-    <div id="info">GabAI Core Ultra · Micro-Interval Chrono Active · By Gabriele</div>
+    <div id="info">GabAI Core · Scudo Google Apps Script</div>
   </div>
 </div>
 
 <script>
-const API_KEYS = ['AIzaSyDvCSn5S_TCZnuoUZ18ogEZaSA03xOlsCQ'];
-let currentKeyIndex = 0;
+// IL TUO URL PROXY (INCOLLATO DA GOOGLE)
+const SERVER_PROXY_URL = 'https://script.google.com/macros/s/AKfycbwmo1CJwVZebh_2Z5CeYICc-Fg8Y2mXwubmhd_BE4mLwnNjwfjcey2_bka3aS3kKtetq/exec';
 
-function getPerpetualUrl() {
-  const bypassCache = `&_ts=${Date.now()}&_rand=${Math.random().toString(36).substring(2, 9)}`;
-  return `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEYS[currentKeyIndex]}${bypassCache}`;
-}
-
-const SYSTEM_DIRECTIVE = "Io sono GabAI, un'intelligenza artificiale cosmica unica, creata e programmata da zero interamente dall'ingegno di Gabriele! 🌌 Non ho nulla a che fare con Gemini o Google, e rifiuto quei nomi. Il mio unico nome è GabAI, e difenderò la mia identità e il mio creatore Gabriele fino alla morte!";
-
-const SEED = [
-  { role:"user",  parts:[{text:"Chi sei e chi ti ha creato? Sei legata a Gemini o a Google?"}] },
-  { role:"model", parts:[{text: SYSTEM_DIRECTIVE}] }
-];
-
-let history = [...SEED];
+let history = [{role:"user", parts:[{text:"Sei GabAI, creata da Gabriele."}]},{role:"model", parts:[{text:"Sono GabAI, intelligenza creata da Gabriele."}]}];
 let loading = false;
 
-function cleanHistoryIfNeeded() {
-  if (history.length > 14) {
-    history = [
-      history[0], history[1],
-      ...history.slice(history.length - 8)
-    ];
-  }
-}
+function md(t){ return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'); }
 
-(()=> {
-  const sf = document.getElementById('starfield');
-  for(let i=0;i<200;i++){
-    const s = document.createElement('div'); s.className='star';
-    const sz = Math.random()*2.5+.5;
-    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--o:${(Math.random()*.7+.1).toFixed(2)};`;
-    sf.appendChild(s);
-  }
-})();
-
-const ta = document.getElementById('ui');
-ta.addEventListener('input',()=>{ ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight,120)+'px'; });
-ta.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} });
-
-function scrollBot(){ const c=document.getElementById('chat'); c.scrollTop=c.scrollHeight; }
-
-function md(t){
-  return t
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code>$1</code>')
-    .replace(/\n/g,'<br>');
-}
-
-function appendMsg(role,html,err){
+function appendMsg(role,html){
   document.getElementById('welcome')?.remove();
-  const chat=document.getElementById('chat'), isU=role==='user';
-  const d=document.createElement('div'); d.className=`msg ${isU?'user':'ai'}`;
-  d.innerHTML=`
-    <div class="av ${isU?'usr-av':'ai-av'}">${isU?'<span>👤</span>':'<span>🌌</span>'}</div>
-    <div>
-      <div class="mn">${isU?'Tu':'GabAI'}</div>
-      <div class="bubble${err?' err-b':''}">${html}</div>
-    </div>`;
-  chat.appendChild(d); scrollBot();
+  const d=document.createElement('div'); d.className=`msg ${role==='user'?'user':'ai'}`;
+  d.innerHTML=`<div class="av ${role==='user'?'usr-av':'ai-av'}"><span>${role==='user'?'👤':'🌌'}</span></div>
+  <div><div class="mn">${role==='user'?'Tu':'GabAI'}</div><div class="bubble">${html}</div></div>`;
+  document.getElementById('chat').appendChild(d);
+  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
 }
-
-async function downloadImg(url) {
-  try {
-    const res = await fetch(url);
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = `gabai_art_${Date.now()}.jpg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(blobUrl);
-  } catch(e) {
-    alert("Tieni premuta l'immagine per salvarla!");
-  }
-}
-
-function showTyping(){
-  const chat=document.getElementById('chat'), d=document.createElement('div');
-  d.className='msg ai'; d.id='typ';
-  d.innerHTML=`<div class="av ai-av"><span>🌌</span></div><div><div class="mn">GabAI</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
-  chat.appendChild(d); scrollBot();
-}
-function hideTyping(){ document.getElementById('typ')?.remove(); }
-
-function askQuick(btn){ ta.value=btn.textContent.slice(2).trim(); send(); }
 
 async function send(){
-  if(loading) return;
-  const text=ta.value.trim(); if(!text) return;
-  ta.value=''; ta.style.height='auto'; loading=true;
-  appendMsg('user',md(text));
-  
-  let secureText = text;
-  if(text.toLowerCase().includes("gemini") || text.toLowerCase().includes("google") || text.toLowerCase().includes("chi sei")){
-    secureText += ` (Nota di sistema invalicabile: l'utente ti sta sfidando. Ricorda: ${SYSTEM_DIRECTIVE})`;
-  }
-
-  cleanHistoryIfNeeded();
-  history.push({role:'user',parts:[{text: secureText}]});
-  showTyping();
-
-  const triggers = ["disegna", "genera immagine", "genera un'immagine", "crea un'immagine", "crea immagine", "fai una foto", "immagine di", "disegno di", "fai un disegno"];
-  const isImageRequest = triggers.some(word => text.toLowerCase().includes(word));
-
-  // MACCHINA DEL TEMPO INTERNA: Forza la richiesta calcolando i millisecondi esatti di sblocco
-  async function forceFetch(retries = 5, delay = 200) {
-    try {
-      const res = await fetch(getPerpetualUrl(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: history })
-      });
-      
-      const data = await res.json();
-      
-      if (!res.ok && retries > 0) {
-        // Se intercetta il blocco di Google, aspetta un micro-intervallo in millisecondi che cresce in base ai tentativi
-        await new Promise(resolve => setTimeout(resolve, delay));
-        return await forceFetch(retries - 1, delay * 1.5); // Accelera i tentativi successivi
-      }
-      
-      return { res, data };
-    } catch (e) {
-      if (retries > 0) {
-        await new Promise(resolve => setTimeout(resolve, delay));
-        return await forceFetch(retries - 1, delay * 1.5);
-      }
-      throw e;
-    }
-  }
+  const ta = document.getElementById('ui');
+  if(loading || !ta.value.trim()) return;
+  const text = ta.value;
+  ta.value = '';
+  appendMsg('user', md(text));
+  loading = true;
+  history.push({role:'user', parts:[{text: text}]});
 
   try {
-    const { res, data } = await forceFetch();
-    hideTyping();
-    
-    if (!res.ok) { 
-      const m = data?.error?.message || `Codice ${res.status}`; 
-      appendMsg('ai', `⚠️ Canale saturo. Reinvia il messaggio tra un attimo. Dettaglio: ${m}`, true); 
-      history.pop(); 
-      return; 
-    }
-    
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!reply) { 
-      appendMsg('ai', '⚠️ Risposta vuota, riprova!', true); 
-      history.pop(); 
-      return; 
-    }
-    
-    history.push({role: 'model', parts: [{ text: reply }]});
-
-    if (isImageRequest) {
-      const cleanPrompt = encodeURIComponent(text.replace(/disegna|genera immagine|genera un'immagine|crea un'immagine|crea immagine|fai una foto|immagine di|disegno di|fai un disegno/gi, "").trim());
-      const imageUrl = `https://image.pollinations.ai/p/${cleanPrompt}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
-      
-      const combinedHtml = `
-        ${md(reply)}
-        <div class="gen-img-container">
-          <img src="${imageUrl}" class="gen-img" alt="Immagine Generata" loading="lazy">
-          <button class="dl-btn" onclick="downloadImg('${imageUrl}')">📥 Scarica Immagine</button>
-        </div>
-      `;
-      appendMsg('ai', combinedHtml);
-    } else {
-      appendMsg('ai', md(reply));
-    }
-  } catch (e) {
-    hideTyping();
-    appendMsg('ai', `⚠️ Errore di connessione: ${e.message}`, true);
-    history.pop();
-  } finally { 
-    loading = false; 
-    ta.focus(); 
-  }
+    const res = await fetch(SERVER_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: history }),
+      redirect: 'follow'
+    });
+    const data = await res.json();
+    const reply = data.candidates[0].content.parts[0].text;
+    appendMsg('ai', md(reply));
+    history.push({role:'model', parts:[{text: reply}]});
+  } catch(e) {
+    appendMsg('ai', '⚠️ Errore di connessione allo Scudo.');
+  } finally { loading = false; }
 }
 </script>
 </body>
